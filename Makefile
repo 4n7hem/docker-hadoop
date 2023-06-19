@@ -1,4 +1,4 @@
-DOCKER_NETWORK = docker-hadoop_default
+DOCKER_NETWORK = dockerhadoop
 ENV_FILE = hadoop.env
 current_branch := $(shell git rev-parse --abbrev-ref HEAD)
 export HADOOP_CLASSPATH := $(shell hdfs classpath)
@@ -22,12 +22,23 @@ wordcount:
 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base hdfs dfs -rm -r /input
 
 load-data:
-	docker cp D:\dados\. namenode:/tmp/
+	docker cp D:\dados\. namenode:/tmp/	
+	docker exec -it namenode hdfs dfs -mkdir /test/
+	docker exec -it namenode hdfs dfs -mkdir /test/input/
+	docker exec -it namenode hdfs dfs -copyFromLocal /tmp/*.json /test/input/
 	
 access-namenode:
 	docker exec -it namenode /bin/bash
 
+config-test:
+	docker build -t hadoop-jobs ./teste
+
 load-test:
+	docker run --network ${DOCKER_NETWORK} hadoop-jobs
+	docker cp .\teste\teste.py hadoop-jobs:/
+	docker exec -it hadoop-wordcount /bin/bash
+
+#load-test:
 #Passos para compilar e rodar um job:
 # Dentro do bash do namenode, fazer:
 # cd tmp
@@ -38,4 +49,4 @@ load-test:
 # hadoop jar URLCountJob.jar URLCountJob /test/input/* /test/output
 # Agora é fazer o Makefile executar tudo isso
 #	docker exec -it namenode export HADOOP_CLASSPATH=$(hdfs classpath)
-	docker cp ./teste/URLCountJob.java namenode:/tmp/
+#	docker cp ./teste/URLCountJob.java namenode:/tmp/
