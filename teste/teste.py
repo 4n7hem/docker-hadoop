@@ -15,7 +15,7 @@ nomes = [ "data-00001-of-00010.json", "data-00002-of-00010.json", "data-00003-of
 
 # Read JSON data from HDFS
 for name in nomes:
-    json_data = spark.read.json("hdfs://172.20.0.7:9000/test/input/" + name)
+    json_data = spark.read.json("hdfs://172.19.0.7:9001/test/input/" + name)
 
 # Perform count operation
     record_count = json_data.count()

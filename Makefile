@@ -33,10 +33,17 @@ access-namenode:
 config-test:
 	docker build -t hadoop-jobs ./teste
 
-load-test:
-	docker run --network ${DOCKER_NETWORK} hadoop-jobs
-	docker cp .\teste\teste.py hadoop-jobs:/
-	docker exec -it hadoop-wordcount /bin/bash
+start-jobs:
+	docker run --network ${DOCKER_NETWORK} --name hadoop-jobs hadoop-jobs
+
+load-test:	
+	docker cp .\teste\teste2.py hadoop-jobs:/    
+#   docker exec -it python3 teste2.py
+
+aaaaa:
+	docker exec -it namenode hdfs dfs -mkdir /test/
+	docker exec -it namenode hdfs dfs -mkdir /test/input/
+	docker exec -it namenode hdfs dfs -copyFromLocal /tmp/*.json /test/input/
 
 #load-test:
 #Passos para compilar e rodar um job:
