@@ -21,6 +21,7 @@ start-jobs:
 load-tests:	
 	docker cp .\teste\word_count.py hadoop-jobs:/ 
 	docker cp .\teste\mention_count.py hadoop-jobs:/ 
+	docker cp .\teste\keyword_count.py hadoop-jobs:/ 
 
 aaaaa:
 	docker exec -it namenode hdfs dfs -mkdir /test/
