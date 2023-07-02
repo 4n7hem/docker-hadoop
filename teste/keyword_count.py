@@ -2,10 +2,13 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import explode, split, col
 from pyspark.sql.types import StructType
 import logging
+import time
 
 # Set the logging level to WARN
 logging.getLogger("py4j").setLevel(logging.ERROR)
 logging.getLogger("org.apache.spark.sql.execution.RowBasedKeyValueBatch").setLevel(logging.ERROR)
+
+start = time.time()
 
 # Create a SparkSession
 spark = SparkSession.builder \
@@ -61,3 +64,7 @@ total_mention_counts.sparkSession \
 
 # Stop the SparkSession
 spark.stop()
+
+end = time.time()
+
+print("Tempo de execução: {0:.2f} segundos".format(end-start))

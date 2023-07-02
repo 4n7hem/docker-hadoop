@@ -1,9 +1,11 @@
 from pyspark.sql import SparkSession
 import logging
+import time
 
 # Set the logging level to WARN
 logging.getLogger("py4j").setLevel(logging.ERROR)
 
+start = time.time()
 # Create a SparkSession
 spark = SparkSession.builder \
     .appName("csv Data Processing") \
@@ -25,3 +27,6 @@ for name in nomes:
 
 # Stop the Spark session
 spark.stop()
+end = time.time()
+
+print("Tempo de execução: {0:.2f} segundos".format(end-start))
