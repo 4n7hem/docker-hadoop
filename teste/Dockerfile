@@ -7,6 +7,7 @@ RUN apt-get update && \
 
 # Install required Python packages
 RUN pip install pyspark
+RUN pip install pandas
 
 # Set environment variables
 ENV PYSPARK_PYTHON=python3

@@ -25,7 +25,7 @@ load-data:
 	docker cp D:\dados\. namenode:/tmp/	
 	docker exec -it namenode hdfs dfs -mkdir /test/
 	docker exec -it namenode hdfs dfs -mkdir /test/input/
-	docker exec -it namenode hdfs dfs -copyFromLocal /tmp/*.json /test/input/
+	docker exec -it namenode hdfs dfs -copyFromLocal /tmp/*.csv /test/input/
 	
 access-namenode:
 	docker exec -it namenode /bin/bash
@@ -36,14 +36,14 @@ config-test:
 start-jobs:
 	docker run --network ${DOCKER_NETWORK} --name hadoop-jobs hadoop-jobs
 
-load-test:	
-	docker cp .\teste\teste2.py hadoop-jobs:/    
-#   docker exec -it python3 teste2.py
+load-tests:	
+	docker cp .\teste\teste.py hadoop-jobs:/ 
+	docker cp .\teste\teste2.py hadoop-jobs:/ 
 
 aaaaa:
 	docker exec -it namenode hdfs dfs -mkdir /test/
 	docker exec -it namenode hdfs dfs -mkdir /test/input/
-	docker exec -it namenode hdfs dfs -copyFromLocal /tmp/*.json /test/input/
+	docker exec -it namenode hdfs dfs -copyFromLocal /tmp/*.csv /test/input/
 
 #load-test:
 #Passos para compilar e rodar um job:
