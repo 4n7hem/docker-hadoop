@@ -19,7 +19,7 @@ nomes = [ "data-00001-of-00010.csv", "data-00002-of-00010.csv", "data-00003-of-0
          "data-00004-of-00010.csv", "data-00005-of-00010.csv", "data-00006-of-00010.csv", "data-00007-of-00010.csv",
          "data-00008-of-00010.csv", "data-00009-of-00010.csv", "data-00000-of-00010.csv",]
 
-nomes = ["hdfs://172.20.0.9:9001/test/input/" + s for s in nomes]
+nomes = ["hdfs://namenode.dockerhadoop:9001/test/input/" + s for s in nomes]
 
 # Initialize an empty DataFrame for storing the total mention counts
 total_mention_counts = None
