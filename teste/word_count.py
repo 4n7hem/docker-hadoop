@@ -17,7 +17,7 @@ nomes = [ "data-00001-of-00010.csv", "data-00002-of-00010.csv", "data-00003-of-0
 
 # Read csv data from HDFS
 for name in nomes:
-    csv_data = spark.read.csv("hdfs://172.18.0.6:9001/test/input/" + name, header=True)
+    csv_data = spark.read.csv("hdfs://172.20.0.9:9001/test/input/" + name, header=True)
 
 # Perform count operation
     record_count = csv_data.count()
