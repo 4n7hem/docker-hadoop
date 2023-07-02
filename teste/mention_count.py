@@ -16,30 +16,29 @@ nomes = [ "data-00001-of-00010.csv", "data-00002-of-00010.csv", "data-00003-of-0
          "data-00004-of-00010.csv", "data-00005-of-00010.csv", "data-00006-of-00010.csv", "data-00007-of-00010.csv",
          "data-00008-of-00010.csv", "data-00009-of-00010.csv", "data-00000-of-00010.csv",]
 
+nomes = ["hdfs://172.18.0.6:9001/test/input/" + s for s in nomes]
+
 # Initialize an empty DataFrame for storing the total mention counts
 total_mention_counts = None
 
 # Read csv data from HDFS
-for name in nomes:
-    print("Executando em:" + name) 
+df = spark.read.csv(nomes, header=True)
 
-    df = spark.read.csv("hdfs://172.18.0.7:9001/test/input/" + name, header=True)
-    
-    # Split the 'Mentions' column by comma and explode the array
-    mentions_col = col("Mentions").cast("string").alias("Mentions")
-    exploded_mentions = df.withColumn("Mentions", split(mentions_col, ","))
+# Split the 'Mentions' column by comma and explode the array
+mentions_col = col("Mentions").cast("string").alias("Mentions")
+exploded_mentions = df.withColumn("Mentions", split(mentions_col, ","))
 
-    # Explode the array of mentions and calculate the frequencies
-    mention_counts = exploded_mentions.select(explode("Mentions").alias("Mention")).groupBy("Mention").count()
+# Explode the array of mentions and calculate the frequencies
+mention_counts = exploded_mentions.select(explode("Mentions").alias("Mention")).groupBy("Mention").count()
 
-    # Show the resulting mention frequencies
-    # mention_counts.show()
+# Show the resulting mention frequencies
+# mention_counts.show()
 
-    # Join the current mention_counts with the total_mention_counts if it exists
-    if total_mention_counts is not None:
-        total_mention_counts = total_mention_counts.unionAll(mention_counts)
-    else:
-        total_mention_counts = mention_counts
+# Join the current mention_counts with the total_mention_counts if it exists
+if total_mention_counts is not None:
+    total_mention_counts = total_mention_counts.unionAll(mention_counts)
+else:
+    total_mention_counts = mention_counts
 
 
 # Sum the mention counts from all the DataFrames
@@ -49,7 +48,7 @@ total_mention_counts.write.csv("saida", header=True, mode="overwrite")
 
 # Merge the output files into a single file
 output_file = "saida" + "/part-*.csv"
-combined_output_file = "saida" + "/combined_output.csv"
+combined_output_file = "saida" + "/combined_output"
 total_mention_counts.sparkSession \
     .read \
     .option("header", "true") \
